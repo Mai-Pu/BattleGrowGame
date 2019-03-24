@@ -1,14 +1,27 @@
+<%@page import="entity.Character"%>
 <%@page import="java.util.ArrayList"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%
 String path = request.getContextPath();
-ArrayList<String> list = (ArrayList)session.getAttribute("note");
-if(list == null){
-	list = new ArrayList<String>();
-	session.setAttribute("note", list);
-}
 %>
+
+<jsp:useBean id="CharacterDirector" class="entitybuild.CharacterDirector" scope="session"/>
+<jsp:useBean id="MonsterFactory" class="entitybuild.MonsterFactory" scope="session"/>
+<%
+	ArrayList<String> list = (ArrayList)session.getAttribute("note");
+	if(list == null){
+		list = new ArrayList<String>();
+		session.setAttribute("note", list);
+	}
+	
+	Character role = (Character)session.getAttribute("Character");
+	if(role == null){
+		role = CharacterDirector.construct();
+		session.setAttribute("Character", role);
+	}
+%>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="zh">
 <head>
@@ -22,9 +35,6 @@ if(list == null){
     <script type="text/javascript">
       function show(where){ 
          J.dialog.get({id: 'haoyue_creat',title: where,width: 600,height:400, link: '<%=path%>/'+where+'.jsp', cover:true});
-      }
-      function search(){
-    	 list.add("你好");
       }
      </script>
 </head>
@@ -46,7 +56,7 @@ if(list == null){
 				<%
 					for(String s : list){
 				%>
-				<div class="comment" style="height:15px"><%=s %></s></div>
+				<div class="comment" style="height:15px"><%=s %></div>
 				<%
 					}
 				%>
@@ -62,17 +72,11 @@ if(list == null){
 			<span class="uk-text-muted">未知</span>
 			<span class="uk-text-muted">未知</span>
 			<span class="uk-text-muted">未知</span>
-			<!--<span class="uk-text-success" v-if="menace=='safe'">安全</span>
-			<span class="uk-text-warning" v-if="menace=='unstable'">不安</span>
-			<span class="uk-text-warning" v-if="menace=='complaint'">敌视</span>
-			<span class="uk-text-danger" v-if="menace=='enmity'">恨意</span>
-			<span class="uk-text-danger" v-if="menace=='hatred'">血仇</span>  
-			<small>(探索消耗：无)</small>-->
 			<button class="uk-button uk-button-primary uk-float-right uk-margin-small-left" onclick="show('skill')">技能</button>
 			<button class="uk-button uk-button-primary uk-float-right uk-margin-small-left" onclick="show('equipment')">装备</button>
 			<button class="uk-button uk-button-primary uk-float-right uk-margin-small-left" onclick="show('backpack')">背包</button>
 			<button class="uk-button uk-button-primary uk-float-right uk-margin-small-left" onclick="show('character')">人物</button>
-			<button class="uk-button uk-button-primary uk-float-right" onclick="window.location='search.jsp'">探索</button>
+			<button class="uk-button uk-button-primary uk-float-right" onclick="window.location='<%=path%>/SearchServlet'">探索</button>
 		</div>
 	</div>
 	

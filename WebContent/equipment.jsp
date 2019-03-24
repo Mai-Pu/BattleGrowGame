@@ -1,5 +1,12 @@
+<%@page import="entity.Equipment"%>
+<%@page import="java.util.HashMap"%>
+<%@page import="java.util.Set"%>
+<%@page import="entity.Character"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%
+	String path = request.getContextPath();
+%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -23,15 +30,27 @@
 					</tr>
 				</thead>
 				<tbody>
+				<%
+					Character role = (Character)session.getAttribute("Character");
+					HashMap<String,Equipment> es = role.getEquipments();
+					Set<String> keys = es.keySet();
+					for(String s:keys){
+				%>
 					<tr>
-						<td style="vertical-align:middle;">木剑</td>
-						<td style="vertical-align:middle;">武器</td>
-						<td style="vertical-align:middle;">攻击+9999&nbsp;强化等级+9999</td>
+						<td style="vertical-align:middle;"><%=es.get(s).getName() %></td>
+						<td style="vertical-align:middle;"><%=es.get(s).getType() %></td>
+						<td style="vertical-align:middle;">
+						<%
+							if("Weapon".equals(s)){
+						%>攻击力<%}else{%>防御力<%} %>+<%=es.get(s).getPower() %>&nbsp;强化等级+<%=es.get(s).getLevel() %></td>
 						<td>
-							<button class="uk-button" title="详情">详情</button>
-							<button class="uk-button" @click="reduceBuilds(list.id)">强化</button>
+							<button class="uk-button" title="<%=es.get(s).describe()%>">详情</button>
+							<button class="uk-button" onclick="window.location='<%=path%>/BackpackServlet?select=seq&equipment=<%=s%>'">强化</button>
 						</td>
 					</tr>
+				<%
+					}
+				%>
 				</tbody>
 			</table>
 		</div>
