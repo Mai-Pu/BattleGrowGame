@@ -12,6 +12,10 @@ String path = request.getContextPath();
 	ArrayList<String> list = (ArrayList)session.getAttribute("note");
 	if(list == null){
 		list = new ArrayList<String>();
+		list.add("欢迎来到这个世界");
+		list.add("你的每一次探索都将显示在剧情栏上");
+		list.add("目前的存档功能还不可用");
+		list.add("祝你好运！！！");
 		session.setAttribute("note", list);
 	}
 	
@@ -36,13 +40,24 @@ String path = request.getContextPath();
       function show(where){ 
          J.dialog.get({id: 'haoyue_creat',title: where,width: 600,height:400, link: '<%=path%>/'+where+'.jsp', cover:true});
       }
+      function setMessage(s){
+    	  
+    	  var box = document.getElementById('messagebox');
+    	  var new_m = document.createElement('div');
+    	  new_m.className = "comment";
+    	  new_m.style.height = "15px";
+    	  var new_Text=document.createTextNode(s);
+    	  new_m.appendChild(new_Text);
+    	  //box.appendChild(new_m);
+    	  box.insertBefore(new_m,box.childNodes[0]);
+      }
      </script>
 </head>
 <body>
 <div id="game" data-uk-margin>
 	<div class="uk-width-1-1">
 		<div class="uk-panel-box uk-container-center uk-panel-box-secondary">
-			<h1 class="uk-text-center" title="Lords">大冒险</h1>
+			<h1 class="uk-text-center" title="Lords">战斗成长游戏</h1>
 			<button class="uk-button uk-button-primary" @click="updateSave()">存档更新</button>
 			<button class="uk-button uk-button-primary" @click="initGame()">存档重置</button>
 			<a class="uk-button uk-button-primary" href="guide.html" target="_blank">新手指南</a>
@@ -52,12 +67,16 @@ String path = request.getContextPath();
 	<div style="text-align:center">
 	<div class="uk-panel uk-panel-box uk-panel-box-primary commentList" style="display:inline-block;width:50%">
 			<div class="uk-panel-title">剧情栏</div>
-			<div class="bor">
+			<div class="bor" id="messagebox">
 				<%
+					int time = 0;
 					for(String s : list){
 				%>
-				<div class="comment" style="height:15px"><%=s %></div>
+				<script type="text/javascript">	
+  					setTimeout("setMessage('<%=s%>')",<%=time %>);
+				</script>
 				<%
+						time+=2000;
 					}
 				%>
 			</div>

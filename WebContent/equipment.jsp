@@ -45,7 +45,7 @@
 						%>攻击力<%}else{%>防御力<%} %>+<%=es.get(s).getPower() %>&nbsp;强化等级+<%=es.get(s).getLevel() %></td>
 						<td>
 							<button class="uk-button" title="<%=es.get(s).describe()%>">详情</button>
-							<button class="uk-button" onclick="window.location='<%=path%>/BackpackServlet?select=seq&equipment=<%=s%>'">强化</button>
+							<button class="uk-button" title="每次强化需要10个金币" onclick="window.location='<%=path%>/BackpackServlet?select=seq&equipment=<%=s%>'">强化</button>
 						</td>
 					</tr>
 				<%

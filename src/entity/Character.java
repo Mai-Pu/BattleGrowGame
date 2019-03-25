@@ -1,6 +1,7 @@
 package entity;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 public class Character implements Battler {
@@ -13,33 +14,48 @@ public class Character implements Battler {
 	private int experience;
 	private List<Equipment> bag;
 
-	public void addToBag(Equipment e) {
-		if (bag.size() < 50)
-			bag.add(e);
+	/*
+	 * 和职业以及状态相关的函数
+	 */
+	public Career getCareer() {
+		return career;
 	}
 
-	public void removeFromBag(Equipment e) {
-		bag.remove(e);
+	public void setCareer(Career career) {
+		this.career = career;
 	}
 
-	public List<Equipment> getBag() {
-		return bag;
+	public int getRank() {
+		return rank;
 	}
 
-	public void setBag(List<Equipment> bag) {
-		this.bag = bag;
+	public void setRank(int rank) {
+		this.rank = rank;
+	}
+
+	public int getMoney() {
+		return money;
+	}
+
+	public void setMoney(int money) {
+		this.money = money;
+	}
+
+	public int getExperience() {
+		return experience;
+	}
+
+	public void setExperience(int experience) {
+		this.experience = experience;
+	}
+
+	@Override
+	public String getType() {
+		// TODO 自动生成的方法存根
+		return career.getType();
 	}
 
 	// 获得新技能的话返回true
-	public boolean increaseExperience(int experience) {
-		this.experience += experience;
-		if (this.experience >= 100) {// 经验值到达100后自动升级
-			this.experience -= 100;
-			return strengthen();
-		}
-		return false;
-	}
-
 	public int getBaseHp() {
 		return career.getHp();
 	}
@@ -101,8 +117,46 @@ public class Character implements Battler {
 		return false;
 	}
 
+	public boolean increaseExperience(int experience) {
+		this.experience += experience;
+		if (this.experience >= 100) {// 经验值到达100后自动升级
+			this.experience -= 100;
+			return strengthen();
+		}
+		return false;
+	}
+
 	public void changeMoney(int money) {
 		this.money += money;
+	}
+
+	/*
+	 * 和背包以及装备相关的一些函数
+	 */
+
+	public HashMap<String, Equipment> getEquipments() {
+		return equipments;
+	}
+
+	public void setEquipments(HashMap<String, Equipment> equipments) {
+		this.equipments = equipments;
+	}
+
+	public List<Equipment> getBag() {
+		return bag;
+	}
+
+	public void setBag(List<Equipment> bag) {
+		this.bag = bag;
+	}
+
+	public void addToBag(Equipment e) {
+		if (bag.size() < 50)
+			bag.add(e);
+	}
+
+	public void removeFromBag(Equipment e) {
+		bag.remove(e);
 	}
 
 	public void wearEquipment(Equipment e) {
@@ -113,38 +167,15 @@ public class Character implements Battler {
 		equipments.remove(e.getType());
 	}
 
-	public Career getCareer() {
-		return career;
+	public void strengthenEquipment(String key) {
+		Equipment e = equipments.get(key);
+		if (e != null)
+			e.strengthen();
 	}
 
-	public void setCareer(Career career) {
-		this.career = career;
-	}
-
-	public int getRank() {
-		return rank;
-	}
-
-	public void setRank(int rank) {
-		this.rank = rank;
-	}
-
-	public int getMoney() {
-		return money;
-	}
-
-	public void setMoney(int money) {
-		this.money = money;
-	}
-
-	public HashMap<String, Equipment> getEquipments() {
-		return equipments;
-	}
-
-	public void setEquipments(HashMap<String, Equipment> equipments) {
-		this.equipments = equipments;
-	}
-
+	/*
+	 * 和技能相关的一些函数
+	 */
 	public Skills getSkills() {
 		return skills;
 	}
@@ -153,23 +184,16 @@ public class Character implements Battler {
 		this.skills = skills;
 	}
 
-	public int getExperience() {
-		return experience;
+	public Iterator<SkillComponent> getSkillIterator() {
+		return skills.getIterator();
 	}
 
-	public void setExperience(int experience) {
-		this.experience = experience;
+	public void strengthenSkill(SkillComponent skill) {
+		skill.upgrade();
 	}
 
-	@Override
-	public String getType() {
-		// TODO 自动生成的方法存根
-		return career.getType();
+	public void removeSkill(SkillComponent skill) {
+		skills.remove(skill);
 	}
 
-	public void strengthenEquipment(String key) {
-		Equipment e = equipments.get(key);
-		if (e != null)
-			e.strengthen();
-	}
 }

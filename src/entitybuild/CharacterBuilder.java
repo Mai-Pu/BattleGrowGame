@@ -25,7 +25,7 @@ public abstract class CharacterBuilder {
 	}
 
 	public void bulidMoney() {
-		character.setMoney(0);
+		character.setMoney(100);
 	}
 
 	public void bulidEquipment() {

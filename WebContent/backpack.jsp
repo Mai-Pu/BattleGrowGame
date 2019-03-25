@@ -64,7 +64,7 @@
 							<%
 								}
 							%>
-							<button class="uk-button" onclick="window.location='<%=path%>/BackpackServlet?select=2&index=<%=i%>'">强化</button>
+							<button class="uk-button" title="每次强化需要10个金币" onclick="window.location='<%=path%>/BackpackServlet?select=2&index=<%=i%>'">强化</button>
 						</td>
 					</tr>
 				<%

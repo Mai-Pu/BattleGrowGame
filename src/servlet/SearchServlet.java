@@ -31,7 +31,7 @@ public class SearchServlet extends HttpServlet {
 	}
 
 	private void addMessage(String s, List<String> list) {
-		list.add(0, s);
+		list.add(s);
 	}
 
 	private void battle(Battler attacker, Battler defenser, int a_hp, int d_hp, List<String> list, int turn) {
@@ -44,7 +44,7 @@ public class SearchServlet extends HttpServlet {
 		}
 		d_hp -= damage;
 		if (attacker instanceof Character) {
-			addMessage("你对怪物造成了" + damage + "点伤害", list);
+			addMessage("你对怪物造成了" + damage + "点伤害," + "怪物还剩下" + d_hp + "点生命值", list);
 			if (d_hp <= 0) {
 				addMessage("区区一个" + defenser.getType() + "看起来还不是你的对手啊", list);
 				Monster monster = (Monster) defenser;
@@ -57,13 +57,14 @@ public class SearchServlet extends HttpServlet {
 				addMessage("你增加了" + exp + "点经验", list);
 				boolean learn = role.increaseExperience(exp);
 				if (learn)
-					addMessage("经过战斗，你好像学会了一个技能，但是也有可能因为你的脑容量满了导致没学会", list);
+					addMessage("经过战斗,你好像学会了一个技能,但是也可能因为你的脑容量满了导致没学会", list);
 				addMessage(defenser.getType() + "掉落了:" + e.getName(), list);
 				role.addToBag(e);
+				addMessage("战斗结束，你获得了胜利！", list);
 				return;
 			}
 		} else {
-			addMessage("怪物对你造成了" + damage + "点伤害", list);
+			addMessage("怪物对你造成了" + damage + "点伤害," + "你还剩下" + d_hp + "点生命值", list);
 			if (d_hp <= 0) {
 				addMessage("你被打败了，看起来你还不够强大", list);
 				return;
